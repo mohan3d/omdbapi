@@ -145,11 +145,8 @@ func (c *Client) find(params ...APIParam) (*MovieInfo, error) {
 }
 
 func (c *Client) get(apiURL string, params ...APIParam) ([]byte, error) {
-	URL, err := url.Parse(apiURL)
+	URL, _ := url.Parse(apiURL)
 
-	if err != nil {
-		return nil, err
-	}
 	query := URL.Query()
 	query.Set("apikey", c.apiKey)
 
@@ -159,15 +156,16 @@ func (c *Client) get(apiURL string, params ...APIParam) ([]byte, error) {
 	URL.RawQuery = query.Encode()
 	response, err := http.Get(URL.String())
 
-	if response.StatusCode != 200 {
-		return nil, errors.New(response.Status)
-	}
 	if err != nil {
 		return nil, err
 	}
 	defer response.Body.Close()
 
+	if response.StatusCode != 200 {
+		return nil, errors.New(response.Status)
+	}
 	body, err := ioutil.ReadAll(response.Body)
+
 	if err != nil {
 		return nil, err
 	}
