@@ -9,11 +9,16 @@ import (
 )
 
 const (
-	movieAPI    = "https://www.omdbapi.com"
-	posterAPI   = "https://img.omdbapi.com"
+	movieAPI  = "https://www.omdbapi.com"
+	posterAPI = "https://img.omdbapi.com"
+
 	searchParam = "s"
 	titleParam  = "t"
 	idParam     = "i"
+
+	invalidAPIKeyError   = "Invalid API key!"
+	movieNotFoundError   = "Movie not found!"
+	incorrectIMDbIDError = "Incorrect IMDb ID."
 )
 
 // MovieInfo describes movie info.
