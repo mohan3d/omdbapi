@@ -103,13 +103,8 @@ func (c *Client) Search(title string, params ...APIParam) (*SearchInfo, error) {
 	return &searchInfo, nil
 }
 
-// PosterByTitle gets poster by movie title.
-func (c *Client) PosterByTitle(title string) (Poster, error) {
-	return c.poster(APIParam{Name: titleParam, Value: title})
-}
-
-// PosterByID gets movie poster by imdb-movie-id.
-func (c *Client) PosterByID(id string) (Poster, error) {
+// Poster gets movie poster by imdb-movie-id.
+func (c *Client) Poster(id string) (Poster, error) {
 	return c.poster(APIParam{Name: idParam, Value: id})
 }
 
@@ -155,7 +150,6 @@ func (c *Client) get(apiURL string, params ...APIParam) ([]byte, error) {
 	defer response.Body.Close()
 
 	body, err := ioutil.ReadAll(response.Body)
-
 	if err != nil {
 		return nil, err
 	}
