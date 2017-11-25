@@ -33,6 +33,14 @@ func TestInvalidAPIKey(t *testing.T) {
 	}
 }
 
+func TestEmptyAPIKey(t *testing.T) {
+	client := New("")
+	_, err := client.Title("MOVIE_TITLE")
+	if err == nil || err.Error() != noAPIKeyProvided {
+		t.Errorf("expected %v error got %v", noAPIKeyProvided, err)
+	}
+}
+
 func TestValidMovieTitle(t *testing.T) {
 	client := New(APIKey())
 	for _, title := range titles {
@@ -84,6 +92,7 @@ func TestSearchInvalidMovie(t *testing.T) {
 		t.Errorf("expected %v error got %v", movieNotFoundError, err)
 	}
 }
+
 func TestPosterValidMovieID(t *testing.T) {
 	client := New(APIKey())
 	for _, movieID := range IDs {
@@ -93,10 +102,11 @@ func TestPosterValidMovieID(t *testing.T) {
 		}
 	}
 }
+
 func TestPosterInvalidMovieID(t *testing.T) {
 	client := New(APIKey())
 	_, err := client.Poster("INVALID_MOVIE_ID")
 	if err == nil || err.Error() != incorrectIMDbIDError {
-		t.Errorf("expected no errors with id '%v' got %v", incorrectIMDbIDError, err)
+		t.Errorf("expected %v error got %v", incorrectIMDbIDError, err)
 	}
 }
