@@ -19,6 +19,7 @@ const (
 	invalidAPIKeyError   = "Invalid API key!"
 	movieNotFoundError   = "Movie not found!"
 	incorrectIMDbIDError = "Incorrect IMDb ID."
+	notFoundError        = "404 Not Found"
 )
 
 // MovieInfo describes movie info.
@@ -100,6 +101,9 @@ func (c *Client) Search(title string, params ...APIParam) (*SearchInfo, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := reponseError(data); err != nil {
+		return nil, err
+	}
 	var searchInfo SearchInfo
 
 	if err := json.Unmarshal(data, &searchInfo); err != nil {
@@ -116,6 +120,9 @@ func (c *Client) Poster(id string) (Poster, error) {
 func (c *Client) poster(param APIParam) (Poster, error) {
 	data, err := c.get(posterAPI, param)
 	if err != nil {
+		if err.Error() == notFoundError {
+			return nil, errors.New(incorrectIMDbIDError)
+		}
 		return nil, err
 	}
 	return Poster(data), nil
@@ -124,6 +131,9 @@ func (c *Client) poster(param APIParam) (Poster, error) {
 func (c *Client) find(params ...APIParam) (*MovieInfo, error) {
 	data, err := c.get(movieAPI, params...)
 	if err != nil {
+		return nil, err
+	}
+	if err := reponseError(data); err != nil {
 		return nil, err
 	}
 	var movieInfo MovieInfo
@@ -149,6 +159,9 @@ func (c *Client) get(apiURL string, params ...APIParam) ([]byte, error) {
 	URL.RawQuery = query.Encode()
 	response, err := http.Get(URL.String())
 
+	if response.StatusCode != 200 {
+		return nil, errors.New(response.Status)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -156,9 +169,6 @@ func (c *Client) get(apiURL string, params ...APIParam) ([]byte, error) {
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil, err
-	}
-	if err := reponseError(body); err != nil {
 		return nil, err
 	}
 	return body, nil
