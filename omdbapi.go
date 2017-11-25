@@ -12,14 +12,15 @@ const (
 	movieAPI  = "https://www.omdbapi.com"
 	posterAPI = "https://img.omdbapi.com"
 
-	searchParam = "s"
-	titleParam  = "t"
 	idParam     = "i"
+	titleParam  = "t"
+	searchParam = "s"
 
+	notFoundError        = "404 Not Found"
+	noAPIKeyProvided     = "No API key provided."
 	invalidAPIKeyError   = "Invalid API key!"
 	movieNotFoundError   = "Movie not found!"
 	incorrectIMDbIDError = "Incorrect IMDb ID."
-	notFoundError        = "404 Not Found"
 )
 
 // MovieInfo describes movie info.
