@@ -52,7 +52,6 @@ type MovieInfo struct {
 	BoxOffice  string `json:"BoxOffice"`
 	Production string `json:"Production"`
 	Website    string `json:"Website"`
-	Response   string `json:"Response"`
 }
 
 // SearchInfo describes search query results.
@@ -65,7 +64,6 @@ type SearchInfo struct {
 		Poster string `json:"Poster"`
 	} `json:"Search"`
 	TotalResults string `json:"totalResults"`
-	Response     string `json:"Response"`
 }
 
 // APIParam describes api query parameter used in client methods.
@@ -175,8 +173,7 @@ func (c *Client) get(apiURL string, params ...APIParam) ([]byte, error) {
 
 func reponseError(response []byte) error {
 	var errorResponse struct {
-		Response string `json:"Response"`
-		Error    string `json:"Error"`
+		Error string `json:"Error"`
 	}
 	if err := json.Unmarshal(response, &errorResponse); err != nil {
 		return err
