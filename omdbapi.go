@@ -120,7 +120,7 @@ func (c *Client) poster(param APIParam) (Poster, error) {
 	data, err := c.get(posterAPI, param)
 	if err != nil {
 		if err.Error() == notFoundError {
-			return nil, errors.New(incorrectIMDbIDError)
+			err = errors.New(incorrectIMDbIDError)
 		}
 		return nil, err
 	}
