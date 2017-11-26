@@ -31,14 +31,6 @@ func TestInvalidAPIKey(t *testing.T) {
 	}
 }
 
-func TestEmptyAPIKey(t *testing.T) {
-	client := New("")
-	_, err := client.Title("MOVIE_TITLE")
-	if err == nil || err.Error() != noAPIKeyProvided {
-		t.Errorf("expected %v error got %v", noAPIKeyProvided, err)
-	}
-}
-
 func TestValidMovieTitle(t *testing.T) {
 	client := New(APIKey())
 	for _, title := range titles {
