@@ -91,6 +91,45 @@ func TestSearchInvalidMovie(t *testing.T) {
 	}
 }
 
+func TestSearchWithParam(t *testing.T) {
+	searchType := "movie"
+	client := New(APIKey())
+	res, err := client.Search("Godfather", APIParam{Name: "type", Value: searchType})
+
+	if err != nil {
+		t.Error(err)
+	}
+	for _, movie := range res.Search {
+		if movie.Type != searchType {
+			t.Errorf("expected %v got %v", searchType, movie.Type)
+		}
+	}
+}
+
+func TestSearchWithMultiParam(t *testing.T) {
+	searchType := "movie"
+	searchYear := "1972"
+
+	params := []APIParam{
+		{Name: "y", Value: searchYear},
+		{Name: "type", Value: searchType},
+	}
+	client := New(APIKey())
+	res, err := client.Search("Godfather", params...)
+
+	if err != nil {
+		t.Error(err)
+	}
+	for _, movie := range res.Search {
+		if movie.Year != searchYear {
+			t.Errorf("expected year `%v` got %v", searchYear, movie.Year)
+		}
+		if movie.Type != searchType {
+			t.Errorf("expected type `%v` got %v", searchType, movie.Type)
+		}
+	}
+}
+
 func TestPosterValidMovieID(t *testing.T) {
 	client := New(APIKey())
 	for _, movieID := range IDs {
