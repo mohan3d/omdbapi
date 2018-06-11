@@ -18,7 +18,7 @@ const (
 
 	notFoundError        = "404 Not Found"
 	noAPIKeyProvided     = "No API key provided."
-	invalidAPIKeyError   = "Invalid API key!"
+	invalidAPIKeyError   = "401 Unauthorized"
 	movieNotFoundError   = "Movie not found!"
 	incorrectIMDbIDError = "Incorrect IMDb ID."
 )
